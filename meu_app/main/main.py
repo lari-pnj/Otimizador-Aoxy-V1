@@ -3,7 +3,13 @@ from tkinter import ttk, messagebox
 import tkinter as tk
 import time
 from funcoes import *
-from tktooltip import ToolTip
+try:
+    from tktooltip import ToolTip
+except Exception:
+    class ToolTip:
+        def __init__(self, widget, msg=None):
+            # fallback quando tktooltip não estiver instalado
+            return
 import subprocess
 import os, sys
 from io import StringIO
@@ -59,11 +65,14 @@ if '--create-restore' in sys.argv:
     do_create_on_startup = True
 
 def resource_path(relative_path):
-    """Encontra o caminho do arquivo mesmo dentro do .exe"""
+    """Retorna caminho absoluto baseado no diretório do arquivo.
+
+    Garante funcionamento tanto rodando como script quanto empacotado com PyInstaller.
+    """
     try:
-        base_path = sys._MEIPASS 
+        base_path = sys._MEIPASS
     except Exception:
-        base_path = os.path.abspath(".") 
+        base_path = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base_path, relative_path)
 
 #=============================================Funções-Locais================================================================
@@ -221,20 +230,24 @@ def executar_acao(texto, cor='white', tempo=2000):
     janela.after(tempo, lambda: finalizar_acao("✅ Concluído!"))
       
 def desativar_recursos():
-   executar_acao('⚡desativando recursos...', cor='lightgreen', tempo=2000)
+    executar_acao('⚡desativando recursos...', cor='lightgreen', tempo=2000)
+    run_and_capture(desativar_recursos_func)
 
 def desinstalar_app():
-   executar_acao('🗑️desinstalando app...', cor='yellow', tempo=2000)
+    executar_acao('🗑️desinstalando app...', cor='yellow', tempo=2000)
+    run_and_capture(desinstalar_app_func)
 
 def atualizar_drives(): 
-   executar_acao('🔄atualizando drives...', cor='lightblue', tempo=2000)
+    executar_acao('🔄atualizando drives...', cor='lightblue', tempo=2000)
+    run_and_capture(atualizar_drives_func)
 
 def limpar_arquivos_desnecessarios(): # ABRIR COMO ADMIN # STATUS NA TELA DO APP
    executar_acao('🗑️excluindo arquivos...', cor='lightgray', tempo=2000)
    run_and_capture(limpar_arquivos_desnecessarios_func)
 
 def recursos_energia(): 
-   executar_acao('⚡ajustando recursos de energia...', cor='red', tempo=2000)
+    executar_acao('⚡ajustando recursos de energia...', cor='red', tempo=2000)
+    run_and_capture(recursos_energia_func)
 
 def limpar_cache_navegador(): # STATUS NA TELA DO APP
    executar_acao('🧹limpando cache...', cor='lightgreen', tempo=2000)
@@ -245,17 +258,20 @@ def desfragmentar_disco(): # ABRIR COMO ADMIN
    run_and_capture(desfragmentar_disco_func)
 
 def configuracoes_visuais():
-   executar_acao('🎨configurando visual...', cor='orange', tempo=2000)
+    executar_acao('🎨configurando visual...', cor='orange', tempo=2000)
+    run_and_capture(configuracoes_visuais_func)
 
 def limpar_prefetch_temp(): # STATUS NA TELA
    executar_acao('🧹limpando prefetch/temp...', cor='blue', tempo=2000)
    run_and_capture(limpar_prefetch_temp_func)
 
 def apps_inicializacao():
-   executar_acao('🔄ajustando apps de inicializacao...', cor='purple', tempo=2000)
+    executar_acao('🔄ajustando apps de inicializacao...', cor='purple', tempo=2000)
+    run_and_capture(apps_inicializacao_func)
    
 def monitorar_temperatura():
     executar_acao('🔍monitorando temperatura...', cor='lightblue', tempo=2000) 
+    run_and_capture(monitorar_temperatura_func)
 
 
 def finalizar_acao(texto):
@@ -273,7 +289,11 @@ janela.title('otimizador Aoxy v1.0')
 janela.geometry('800x600')
 janela.config(background="#1e1e2e")
 janela.resizable(False, False)
-janela.iconbitmap(resource_path("main/img/icon.ico"))
+try:
+    janela.iconbitmap(resource_path("main/img/icon.ico"))
+except Exception:
+    # ignorar falha ao carregar ícone (arquivo pode não existir em ambiente de desenvolvimento)
+    pass
 
 
 # ======================Frame lateral==========================================
@@ -415,11 +435,12 @@ tk.Label(aba_sobre, text="Otimizador Aoxy v1.0", font=("Heavitas", 16, "normal")
          bg="#1b1b2f", fg="lightblue").pack(pady=20)
 tk.Label(aba_sobre, font=("Caviar Dreams", 12, "bold"), bg="#1b1b2f", fg="white").pack(pady=10)
 
+sobre_path = resource_path(os.path.join('info', 'sobre.txt'))
 try:
-    with open("info/sobre.txt", "r", encoding="utf-8") as f:
+    with open(sobre_path, "r", encoding="utf-8") as f:
         conteudo_sobre = f.read()
-except FileNotFoundError:
-    conteudo_sobre = "Arquivo 'sobre.txt' não encontrado.\nColoque-o na mesma pasta do programa."
+except Exception:
+    conteudo_sobre = "Arquivo 'sobre.txt' não encontrado.\nColoque-o na pasta 'info' ao lado do programa."
     
 # Exibir o texto no widget
 texto_sobre = tk.Text(aba_sobre, wrap="word", bg="#2c2c44", fg="white",

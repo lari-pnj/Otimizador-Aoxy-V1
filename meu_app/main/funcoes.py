@@ -65,7 +65,14 @@ def desfragmentar_disco_func():
      
 # Abrir Configurações Avançadas de Desempenho (Efeitos Visuais)
 def configuracoes_visuais_func():
-     subprocess.run("SystemPropertiesPerformance.exe", shell=True)
+      # Usa caminho absoluto para evitar dependência do PATH
+      systemroot = os.environ.get('SystemRoot', r'C:\Windows')
+      exe = os.path.join(systemroot, 'System32', 'SystemPropertiesPerformance.exe')
+      try:
+           subprocess.run([exe], check=False)
+      except Exception:
+           # fallback: tentar chamar apenas pelo nome (em alguns sistemas funciona)
+           subprocess.run("SystemPropertiesPerformance.exe", shell=True)
 
 # DELETA A PASTA PREFETCH
 
