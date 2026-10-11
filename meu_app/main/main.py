@@ -1,9 +1,9 @@
-import utils, options
+import utils, options, shutil
       
 LOGO = "\n".join([
-    "=" * 50,
-    " Otimizador AOXY ".center(50, "-"),
-    "=" * 50
+    "\033[38;2;255;165;0m" +
+    "======== AOXY V1 =======".center(shutil.get_terminal_size().columns) + 
+    '\033[0m\n'
 ])   
 
 def main():

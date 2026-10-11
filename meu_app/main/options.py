@@ -1,4 +1,5 @@
-import models, sys, utils, os
+import models, sys, utils, os, shutil
+from itertools import zip_longest
 
 OPTIONS = (
     models.Option("Desativar Recursos",             
@@ -42,14 +43,38 @@ OPTIONS = (
     ),
 )
 
+
 def showOptions():
-   for i, opt in enumerate(OPTIONS):
-      alignment = "0" if i < 9 else ""
-      number    = alignment + str(i + 1)
-      
-      print(f"[{number}] ➤ ", opt.name)
-      
-   print()
+    half    = (len(OPTIONS) + 1) // 2
+    coluna1 = OPTIONS[:half]
+    coluna2 = OPTIONS[half:]
+
+    widthCol1    = 40
+    widthBlock   = 75
+
+    termWidth  = shutil.get_terminal_size().columns
+    leftMargin = max(0, (termWidth - widthBlock) // 2)
+    spaces     = " " * leftMargin
+
+    print('') # \n
+
+    for opt1, opt2 in zip_longest(coluna1, coluna2, fillvalue=None):
+        line1 = ""
+        line2 = ""
+
+        if opt1 is not None:
+            i = OPTIONS.index(opt1)
+            number = f"{i + 1:02}"
+            line1 = f"[{number}] ➤ {opt1.name}"
+
+        if opt2 is not None:
+            i = OPTIONS.index(opt2)
+            number = f"{i + 1:02}"
+            line2 = f"[{number}] ➤ {opt2.name}"
+
+        print(f"{spaces}{line1:<{widthCol1}}{line2}\n")
+
+    print()
    
 def handleOption():
    while True:
