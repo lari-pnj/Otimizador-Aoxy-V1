@@ -13,23 +13,16 @@ otimizações reais do sistema
 ------
 ## Funcionalidades
 
-1- Desativar Recursos
-2- Desinstalar Apps
-3- Atualizar Drivers
-4- Limpeza das pastas (temp, %temp%)
-5- Recursos de Energia
-6- Configurações Visuais
-7- Limpar Prefetch
-8- Apps de Inicialização
-9- Monitorar Temperatura 
-10- Desativar Apps de Segundo plano
-11- Otimizar gamebar
-12- Desativar Relatorios de erro
-13- Desativar Cortana
-14- Aumentar prioridade da cpu/gpu 
-15- Desativar telemetria
-16- Aumentar Prioridade Foreground 
-17- Melhorar Conexão de ping
+01- Desativar Recursos
+02- Desinstalar Apps
+03- Atualizar Drivers
+04- Limpeza das pastas (temp, %temp%)
+05- Recursos de Energia
+06- Configurações Visuais
+07- Limpar Prefetch
+08- Apps de Inicialização
+09- Monitorar Temperatura 
+10- Sair
 
 -------
 
