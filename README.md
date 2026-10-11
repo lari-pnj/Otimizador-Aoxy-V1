@@ -22,6 +22,14 @@ otimizações reais do sistema
 7- Limpar Prefetch
 8- Apps de Inicialização
 9- Monitorar Temperatura 
+10- Desativar Apps de Segundo plano
+11- Otimizar gamebar
+12- Desativar Relatorios de erro
+13- Desativar Cortana
+14- Aumentar prioridade da cpu/gpu 
+15- Desativar telemetria
+16- Aumentar Prioridade Foreground 
+17- Melhorar Conexão de ping
 
 -------
 

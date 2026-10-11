@@ -58,25 +58,25 @@ def configuracoes_visuais_func():
 
 
 # função 7
-#def limpar_prefetch_temp_func():
-#     prefetch_path = r"C:\Windows\Prefetch"
+def limpar_prefetch_temp_func():
+     prefetch_path = r"C:\Windows\Prefetch"
 
      # Verifica se a pasta existe 
-#     if os.path.exists(prefetch_path):
-#          for file in os.listdir(prefetch_path):
-#               file_path = os.path.join(prefetch_path, file)
-#               try:
-#                    if os.path.isfile(file_path):
-#                         os.remove(file_path)  # Apaga arquivos
-#                         print(f"Apagado: {file_path}")
-#               except PermissionError:
-#                    print(f"Sem permissão para apagar: {file_path}")
-#                    time.sleep(2)
-#               except Exception as e:
-#                    print(f"Erro ao apagar {file_path}: {e}")
-#                    time.sleep(2)
-#          else:
-#           print("Pasta Prefetch não encontrada.")
+     if os.path.exists(prefetch_path):
+          for file in os.listdir(prefetch_path):
+               file_path = os.path.join(prefetch_path, file)
+               try:
+                    if os.path.isfile(file_path):
+                         os.remove(file_path)  # Apaga arquivos
+                         print(f"Apagado: {file_path}")
+               except PermissionError:
+                    print(f"Sem permissão para apagar: {file_path}")
+                    time.sleep(2)
+               except Exception as e:
+                    print(f"Erro ao apagar {file_path}: {e}")
+                    time.sleep(2)
+          else:
+           print("Pasta Prefetch não encontrada.")
 
 
 # função 8
@@ -86,10 +86,6 @@ def apps_inicializacao_func():
 # função 9
 def monitorar_temperatura_func():
      subprocess.run("resmon.exe", shell=True)
-
-
-
-################################################# FUNÇÕES A SEREM ENCREMENTADAS ##############################################
 
 # função 10
 def desativar_apps_seg_plan_func(): 
@@ -106,27 +102,25 @@ def desativar_apps_seg_plan_func():
         print(f'[Erro] Apps segundo plano {e}')  
         time.sleep(2) 
 
+# função 11 
+def desativar_relatorios_erro_func():
+    path = (
+         r'SOFTWARE\Microsoft\Windows\Windows Error Reporting'        
+    )
+    try:
+        key = winreg.Createkey(winreg.HKEY_LOCAL_MACHINE, path)
+        winreg.SetValueEx(key, "disable", 0, winreg.REG_DWORD, 1)
+        winreg.CloseKey(key)
+    except Exception as e:
+         print(f'[Erro Registro WER]: {e}')
+         time.sleep(2)
 
-# função 11 (revisar)
-#def desativar_relatorios_erro_func():
- #    path = (
- #         r'SOFTWARE\Microsoft\Windows\Windows Error Reporting'        
- #    )
- #    try:
- #        key = winreg.Createkey(winreg.HKEY_LOCAL_MACHINE, path)
- #        winreg.SetValueEx(key, "disable", 0, winreg.REG_DWORD, 1)
- #        winreg.CloseKey(key)
- #    except Exception as e:
- #         print(f'[Erro Registro WER]: {e}')
- #         time.sleep(2)
-
- #   subprocess.run('net stop WerSvc', shell=True, capture_output=True)
- #    subprocess.run(
- #         'sc config WerSvc start= disable', shell=True, capture_output=True
- #    )     
- #    print('[Sucesso] Relatórios de erro desativados.') 
- #    time.sleep(2)   
-
+    subprocess.run('net stop WerSvc', shell=True, capture_output=True)
+    subprocess.run(
+         'sc config WerSvc start= disable', shell=True, capture_output=True
+     )     
+    print('[Sucesso] Relatórios de erro desativados.') 
+    time.sleep(2)   
 
 
 # FUNÇÕES QUE ALTERAM OS REGISTROS #############################################
@@ -140,25 +134,25 @@ def alterar_registros(hive, path, nome_valor, valor, tipo=winreg.REG_DWORD):
      except Exception as e:
           print(f'[Erro] Falha ao alterar {nome_valor}: {e}')
 
-
 # função 12
-# Desativar Cortana
-#     alterar_registros(
-#          winreg.HKEY_LOCAL_MACHINE,
-#          r'SOFTWARE\policies\microsoft\windows Search', 
-#          'AllowCortana', 0,)
+def Desativar_Cortana():
+     print('Desativando Cortana...')
+     alterar_registros(
+          winreg.HKEY_LOCAL_MACHINE,
+          r'SOFTWARE\policies\microsoft\windows Search', 
+          'AllowCortana', 0,)
 
 # função 13    
-# Otimizar gamebar
-#     alterar_registros(
-#          winreg.HKEY_CURRENT_USER, r'System\GameConfigStore', 'GameDVR_Enabled', 0 )
+def Otimizar_gamebar():
+     alterar_registros(
+          winreg.HKEY_CURRENT_USER, r'System\GameConfigStore', 'GameDVR_Enabled', 0 )
 
 # função 14     
-# Aumentar prioridade da cpu/gpu
-#     alterar_registros(
-#          winreg.HKEY_LOCAL_MACHINE,
-#          r'SYSTEM\CurrentControlSet\Control\PriorityControl',
-#          'Win32PrioritySeparation', 38,)
+def Aumentar_prioridade_cpu_gpu():
+     alterar_registros(
+          winreg.HKEY_LOCAL_MACHINE,
+          r'SYSTEM\CurrentControlSet\Control\PriorityControl',
+          'Win32PrioritySeparation', 38,)
 
 
 # função 15
@@ -192,9 +186,9 @@ def aumentar_foreground_func():
 # função 17
 # 9- Melhorar Conexão de ping (Dns jumper)
 #def melhorar_ping_func(ip_dns='1.1.1.1'):
-#cmd = ('powershell -Command "Get-NetAdapter | where-Object {$_.Status -eq \'up\'}'
+#    cmd = ('powershell -Command "Get-NetAdapter | where-Object {$_.Status -eq \'up\'}'
 #     f" | Set-DnsClientServerAddress -ServerAddresses ('{ip_dns}')\"")
-#executar_comando(cmd)
+#    executar_comando(cmd)
 #print(f'[Rede] DNS alterado para {ip_dns}')
 
 #melhorar_ping_func('1.1.1.1')

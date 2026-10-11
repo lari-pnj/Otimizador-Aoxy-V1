@@ -10,10 +10,16 @@ import sys
 
 # Solicita a permissao de administrador
 
-#if not ctypes.windll.shell32.isUserAnAdmin():
-#   ctypes.windll.shell32.shellExecuteW(
-#      None, 'runas', sys.executable, ' '.join(sys.argv), None, 1
-#   )
+#def verificar_admin():
+#   try:
+#      return ctypes.windll.shell32.IsUserAnAdmin()
+#   except:
+#      return False
+
+#if not verificar_admin():
+#   script = 'c:\\Users\\laris\\OneDrive\\Documentos\\MeusProjetosGithub\\Otimizador-Aoxy-V1\\.venv\\Scripts\\python.exe'
+#   params = params = '"C:\\Users\\laris\\OneDrive\\Documentos\\MeusProjetosGithub\\Otimizador-Aoxy-V1\\meu_app\\main\\main.py"'
+#   ctypes.windll.shell32.shellExecuteW(None, 'runas', script, params, None, 1)
 #   sys.exit()
 
    
@@ -21,7 +27,7 @@ def menu():
     
     titulo()
 
-    # LISTA DE FUNÇÕES 1
+    # LISTA DE FUNÇÕES
     opcoes = ['[1] ➤  Desativar recursos',
              '[2] ➤  Desinstalar apps',
              '[3] ➤  Atualizar Drivers',
@@ -133,7 +139,7 @@ def main():
         elif escolha == '11': 
             print('Otimizar gamebar')
             time.sleep(2)
-            alterar_registros(winreg.HKEY_CURRENT_USER, r'System\GameConfigStore', 'GameDVR_Enabled', 0 )
+            Otimizar_gamebar()
 
         elif escolha == '12': 
             print('Desativar Relatorios de erro')
@@ -143,19 +149,12 @@ def main():
         elif escolha == '13': 
             print('Desativar Cortana')
             time.sleep(2)
-            alterar_registros(
-                      winreg.HKEY_LOCAL_MACHINE,
-                      r'SOFTWARE\policies\microsoft\windows Search', 
-                      'AllowCortana', 0,)
+            Desativar_Cortana()
 
         elif escolha == '14': 
             print('Aumentar prioridade da cpu/gpu')
             time.sleep(2)
-            alterar_registros(
-                     winreg.HKEY_LOCAL_MACHINE,
-                     r'SYSTEM\CurrentControlSet\Control\PriorityControl',
-                     'Win32PrioritySeparation',
-                     38,)
+            Aumentar_prioridade_cpu_gpu()
    
         elif escolha == '15': 
             print('Desativar telemetria')
